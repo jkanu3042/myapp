@@ -14,3 +14,9 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::pattern('foo', '[0-9a-zA-Z]{3}');
+
+Route::get('/{foo?}', function($value){
+    return $value;
+});
