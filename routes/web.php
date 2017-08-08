@@ -12,11 +12,19 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    //return view('errors.503');
 
-Route::pattern('foo', '[0-9a-zA-Z]{3}');
 
-Route::get('/{foo?}', function($value){
-    return $value;
+//  case 1. with 사용.
+//    return view('welcome')->with([
+//        'name' => 'Foo',
+//        'greeting' => '안녕하세요',
+//    ]);
+
+//  case 2. view 인자 사용.(실전 권장)
+    return view('welcome',[
+        'name' => 'Foo',
+        'greeting' => '안녕하세요',
+    ]);
+
 });
