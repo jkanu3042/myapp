@@ -12,7 +12,6 @@
 */
 
 Route::get('/', function () {
-    //return view('errors.503');
 
 
 //  case 1. with 사용.
@@ -22,9 +21,10 @@ Route::get('/', function () {
 //    ]);
 
 //  case 2. view 인자 사용.(실전 권장)
+
+    $items = ['사과','바나나','포도'];
     return view('welcome',[
-        'name' => 'Foo',
-        'greeting' => '안녕하세요',
+        'items'=>$items,
     ]);
 
 });

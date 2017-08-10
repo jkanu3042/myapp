@@ -1,3 +1,24 @@
-<h1>Hello Laravel</h1>
+@extends('layouts.master')
 
-<h1><?= isset($greeting) ? "{$greeting} " : 'Hello'; ?> <?= $name; ?></h1>
+
+@section('script')
+    <script>
+        alert("저는 자식뷰의 'script' 섹션입니다. "    );
+    </script>
+@endsection
+
+@section('content')
+<ul>
+    @forelse($items as $item)
+        <li>{{$item}}</li>
+    @empty
+        <li>아무것도 없어요.</li>
+        @endforelse
+    </ul>
+
+@include('partials.footer')
+
+@endsection
+
+
+
