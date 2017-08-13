@@ -8,7 +8,17 @@ class ArticlesController extends Controller
 {
     public function index()
     {
-        return __METHOD__ . '은(는) Article 컬렉션을 조회합니다.';
+        //return __METHOD__ . '은(는) Article 컬렉션을 조회합니다.';
+
+        //즉시 로드(Eager Load)
+//        $articles = \App\Article::with('user')->get();
+//        return view('articles.index', compact('articles'));
+
+        //지연 로드(lazy load) - 즉시 로드하지 않고 나중에 필요할때에 관계를 로드 할 때 이 방법을 쓴다.
+        $articles = \App\Article::latest()->paginate(3);
+        $articles->load('user');
+        return view('articles.index', compact('articles'));
+
     }
     /**
      * Show the form for creating a new resource.
