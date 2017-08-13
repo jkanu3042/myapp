@@ -1,14 +1,9 @@
 @extends('layouts.master')
 
 
-@section('script')
-    <script>
-        alert("저는 자식뷰의 'script' 섹션입니다. "    );
-    </script>
-@endsection
 
 @section('content')
-<ul>
+    <ul>
     @forelse($items as $item)
         <li>{{$item}}</li>
     @empty
@@ -16,9 +11,13 @@
         @endforelse
     </ul>
 
-@include('partials.footer')
-
+    @include('partials.footer')
 @endsection
 
+@section('script')
+    <script>
+        alert("저는 자식뷰의 'script' 섹션입니다. "    );
+    </script>
+@endsection
 
 
