@@ -16,7 +16,7 @@
 
 @section('script')
     <script>
-        alert("저는 자식뷰의 'script' 섹션입니다. "    );
+        //alert("저는 자식뷰의 'script' 섹션입니다. "    );
     </script>
 @endsection
 
