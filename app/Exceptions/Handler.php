@@ -44,6 +44,17 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
+        if(app()->environment('production')){
+            if($exception instanceof \Illuminate\Database\Eloquent\
+                ModelNotFoundException)
+            {
+                return response(view('errors.notice',[
+                    'title' => '찾을 수 없습니다.',
+                    'description' => '죄송합니다. 요청한 페이지를 찾을 수 없습니다.'
+                ]), 404);
+            }
+
+        }
         return parent::render($request, $exception);
     }
 

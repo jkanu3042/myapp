@@ -18,6 +18,9 @@ class ArticlesController extends Controller
         //지연 로드(lazy load) - 즉시 로드하지 않고 나중에 필요할때에 관계를 로드 할 때 이 방법을 쓴다.
         $articles = \App\Article::latest()->paginate(3);
         $articles->load('user');
+
+        //15.4.2 뷰 디버깅
+        //dd(view('articles.index', compact('articles'))->render());
         return view('articles.index', compact('articles'));
 
     }
@@ -81,7 +84,9 @@ class ArticlesController extends Controller
      */
     public function show($id)
     {
-        return __METHOD__ . '은(는) 다음 기본 키를 가진 Article 모델을 조회합니다.:'. $id;
+        $article = \App\Article::findOrFail($id);
+        dd($article);
+        return $article->toArray();
     }
     /**
      * Show the form for editing the specified resource.
