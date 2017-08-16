@@ -13,8 +13,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        'App\Events\Event' => [
-            'App\Listeners\EventListener',
+        \App\Events\ArticleEvent::class => [
+            \App\Listeners\ArticlesEventListener::class,
+        ],
+        \Illuminate\Auth\Events\Login::class => [
+            \App\Listeners\UserEventListener::class,
         ],
     ];
 
@@ -27,6 +30,12 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+//        \Event::listen(
+//           'article.created',
+//            \App\Listeners\ArticlesEventListener::class
+//
+//          \App\Events\ArticleCreated::class,
+//          \App\Listeners\ArticlesEventListener::class
+//        );
     }
 }
