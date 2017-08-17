@@ -64,6 +64,16 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
+Route::get('docs/{file?}', function ($file = null){
+    $text = (new App\Documentation)->get($file);
+
+    return app(ParsedownExtra::class)->text($text);
+
+});
+
+
+
+
 //DB::listen(function ($query){
 //    var_dump($query->sql);
 //});
@@ -102,14 +112,8 @@ Route::get('markdown', function(){
 [1] : http://daringfireball.net/projects/markdown
 
 [^1] : 두번째 항목_ http://google.com
-
-
-
 EOT;
-
     return app(ParsedownExtra::class)->text($text);
-
-
 });
 
 
