@@ -85,8 +85,8 @@ class ArticlesController extends Controller
     public function show($id)
     {
         $article = \App\Article::findOrFail($id);
-        dd($article);
-        return $article->toArray();
+        debug($article->toArray());
+        return view('articles.show', compact('article'));
     }
     /**
      * Show the form for editing the specified resource.
