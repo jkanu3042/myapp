@@ -16,7 +16,7 @@ class ArticlesController extends Controller
 //        return view('articles.index', compact('articles'));
 
         //지연 로드(lazy load) - 즉시 로드하지 않고 나중에 필요할때에 관계를 로드 할 때 이 방법을 쓴다.
-        $articles = \App\Article::latest()->paginate(3);
+        $articles = \App\Arpticle::latest()->paginate(3);
         $articles->load('user');
 
         //15.4.2 뷰 디버깅

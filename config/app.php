@@ -164,6 +164,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         Intervention\Image\ImageServiceProvider::class,
+        Laracasts\Flash\FlashServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -229,6 +230,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
         'Image'=> Intervention\Image\Facades\Image::class,
+        'Flash'=>Laracasts\Flash\Flash::class,
 
     ],
 

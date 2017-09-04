@@ -5569,7 +5569,7 @@ if (token) {
      * @private
      * @param {Array} args The provided arguments.
      * @param {Array} partials The arguments to prepend to those provided.
-     * @param {Array} holders The `partials` placeholder indexes.
+     * @param {Array} holders The `partial` placeholder indexes.
      * @params {boolean} [isCurried] Specify composing for a curried function.
      * @returns {Array} Returns the new array of composed arguments.
      */
@@ -5604,7 +5604,7 @@ if (token) {
      * @private
      * @param {Array} args The provided arguments.
      * @param {Array} partials The arguments to append to those provided.
-     * @param {Array} holders The `partials` placeholder indexes.
+     * @param {Array} holders The `partial` placeholder indexes.
      * @params {boolean} [isCurried] Specify composing for a curried function.
      * @returns {Array} Returns the new array of composed arguments.
      */
@@ -6038,7 +6038,7 @@ if (token) {
      * @param {*} [thisArg] The `this` binding of `func`.
      * @param {Array} [partials] The arguments to prepend to those provided to
      *  the new function.
-     * @param {Array} [holders] The `partials` placeholder indexes.
+     * @param {Array} [holders] The `partial` placeholder indexes.
      * @param {Array} [partialsRight] The arguments to append to those provided
      *  to the new function.
      * @param {Array} [holdersRight] The `partialsRight` placeholder indexes.
@@ -6192,7 +6192,7 @@ if (token) {
 
     /**
      * Creates a function that wraps `func` to invoke it with the `this` binding
-     * of `thisArg` and `partials` prepended to the arguments it receives.
+     * of `thisArg` and `partial` prepended to the arguments it receives.
      *
      * @private
      * @param {Function} func The function to wrap.
@@ -6278,7 +6278,7 @@ if (token) {
      * @param {*} [thisArg] The `this` binding of `func`.
      * @param {Array} [partials] The arguments to prepend to those provided to
      *  the new function.
-     * @param {Array} [holders] The `partials` placeholder indexes.
+     * @param {Array} [holders] The `partial` placeholder indexes.
      * @param {Array} [argPos] The argument positions of the new function.
      * @param {number} [ary] The arity cap of `func`.
      * @param {number} [arity] The arity of `func`.
@@ -6385,7 +6385,7 @@ if (token) {
      *  512 - `_.flip`
      * @param {*} [thisArg] The `this` binding of `func`.
      * @param {Array} [partials] The arguments to be partially applied.
-     * @param {Array} [holders] The `partials` placeholder indexes.
+     * @param {Array} [holders] The `partial` placeholder indexes.
      * @param {Array} [argPos] The argument positions of the new function.
      * @param {number} [ary] The arity cap of `func`.
      * @param {number} [arity] The arity of `func`.
@@ -10942,7 +10942,7 @@ if (token) {
 
     /**
      * Creates a function that invokes `func` with the `this` binding of `thisArg`
-     * and `partials` prepended to the arguments it receives.
+     * and `partial` prepended to the arguments it receives.
      *
      * The `_.bind.placeholder` value, which defaults to `_` in monolithic builds,
      * may be used as a placeholder for partially applied arguments.
@@ -10956,7 +10956,7 @@ if (token) {
      * @category Function
      * @param {Function} func The function to bind.
      * @param {*} thisArg The `this` binding of `func`.
-     * @param {...*} [partials] The arguments to be partially applied.
+     * @param {...*} [partial] The arguments to be partially applied.
      * @returns {Function} Returns the new bound function.
      * @example
      *
@@ -10985,7 +10985,7 @@ if (token) {
     });
 
     /**
-     * Creates a function that invokes the method at `object[key]` with `partials`
+     * Creates a function that invokes the method at `object[key]` with `partial`
      * prepended to the arguments it receives.
      *
      * This method differs from `_.bind` by allowing bound functions to reference
@@ -11002,7 +11002,7 @@ if (token) {
      * @category Function
      * @param {Object} object The object to invoke the method on.
      * @param {string} key The key of the method.
-     * @param {...*} [partials] The arguments to be partially applied.
+     * @param {...*} [partial] The arguments to be partially applied.
      * @returns {Function} Returns the new bound function.
      * @example
      *
@@ -11548,7 +11548,7 @@ if (token) {
     });
 
     /**
-     * Creates a function that invokes `func` with `partials` prepended to the
+     * Creates a function that invokes `func` with `partial` prepended to the
      * arguments it receives. This method is like `_.bind` except it does **not**
      * alter the `this` binding.
      *
@@ -11563,7 +11563,7 @@ if (token) {
      * @since 0.2.0
      * @category Function
      * @param {Function} func The function to partially apply arguments to.
-     * @param {...*} [partials] The arguments to be partially applied.
+     * @param {...*} [partial] The arguments to be partially applied.
      * @returns {Function} Returns the new partially applied function.
      * @example
      *
