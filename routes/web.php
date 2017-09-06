@@ -11,7 +11,11 @@
 |
 */
 
-
+/*Social Login*/
+Route::get(
+    'social/{provider}',
+    'SocialController@execute'
+    )->name('social.login');
 
 
 Route::get('/', 'WelcomeController@index');

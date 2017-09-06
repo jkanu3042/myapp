@@ -19,6 +19,14 @@ class UsersController extends Controller
 
     public function store(Request $request)
     {
+        if ($socialUser = \App\User::socialUser($request->get('email'))->first()) {
+            return $this->updateSocialAccount($request, $socialUser);
+        }
+
+        return $this->createNativeAccount($request);
+    }
+
+    protected function createNativeAccount(Request $request) {
         $this->validate($request, [
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
@@ -27,36 +35,38 @@ class UsersController extends Controller
 
         $confirmCode = str_random(60);
 
-
         $user = \App\User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
-            'password'=>bcrypt($request->input('password')),
+            'password' => bcrypt($request->input('password')),
             'confirm_code' => $confirmCode,
         ]);
 
-//        \Mail::send('emails.auth.confirm',
-//            compact('user'),
-//            function($message) use ($user) {
-//           $message->to($user->email);
-//           $message->subject(
-//                sprintf('[%s] 회원 가입을 확인해주세요.', config('app.name'))
-//           );
-//
-//        });
-
         event(new \App\Events\UserCreated($user));
 
+        return $this->respondCreated(
+            '가입하신 메일 계정으로 가입 확인 메일을 보내드렸습니다. 가입 확인하시고 로그인해 주세요.'
+        );
+    }
+
+    protected function updateSocialAccount(Request $request, \App\User $user)
+    {
+        $this->validate($request, [
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255',
+            'password' => 'required|confirmed|min:6',
+        ]);
+
+        $user->update([
+            'name' => $request->input('name'),
+            'password' => bcrypt($request->input('password')),
+        ]);
 
         auth()->login($user);
-        //flash('가입하신 메일 계정으로 가입 확인 메일을 보내드렸습니다. 가입 확인하시고 로그인해주세요.');
-        //flash(auth()->user()->name . '님 환영합니다.');
 
-
-        return $this->respondCreated('가입하신 메일 계정으로 가입 확인 메일을 보내드렸습니다. 가입 확인하시고 로그인해주세요.');
-
-
+        return $this->respondCreated($user->name . '님, 환영합니다.');
     }
+
 
     public function confirm($code)
     {
