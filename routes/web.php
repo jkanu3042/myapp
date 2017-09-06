@@ -11,57 +11,77 @@
 |
 */
 
-/*
-Route::get('/', function () {
-//  case 1. with 사용.
-//    return view('welcome')->with([
-//        'name' => 'Foo',
-//        'greeting' => '안녕하세요',
-//    ]);
 
-//  case 2. view 인자 사용.(실전 권장)
-
-//    $items = ['사과','바나나','포도'];
-//    return view('welcome',[
-//        'items'=>$items,
-//    ]);
-});
-*/
 
 
 Route::get('/', 'WelcomeController@index');
 
+Route::get('/home', 'HomeController@index')->name('home');
+
 Route::resource('articles', 'ArticlesController');
 
-Route::get('auth/login', function(){
-   $credentials = [
-       'email' => 'john@example.com',
-       'password' => 'password',
-   ];
+//사용자 가입
+Route::get(
+    'auth/register',
+    'UsersController@create'
+)->name('users.create');
 
-   if (! auth()->attempt($credentials)) {
-      return '로그인 정보가 정확하지 않습니다.';
-   }
+Route::post(
+    'auth/register',
+    'UsersController@store'
+)->name('users.store');
 
-    return redirect('protected');
-});
+Route::get(
+    'auth/confirm/{code}',
+    'UsersController@confirm'
+)->name('users.confirm')
+    ->where('code', '[\pL-\pN]{60}');
 
-Route::get('protected', ['middleware' => 'auth',function(){
-   dump(session()->all());
+//사용자 인증
 
-    return '어서 오세요'. auth()->user()->name.'님';
+Route::get(
+    'auth/login',
+    'SessionsController@create'
+)->name('sessions.create');
 
-}]);
+Route::post(
+    'auth/login',
+    'SessionsController@store'
+)->name('sessions.store');
 
-Route::get('auth/logout', function(){
-   auth()->logout();
+Route::get(
+    'auth/logout',
+    'SessionsController@destroy'
+)->name('sessions.destroy');
 
-    return '또 봐요~';
-});
 
-Auth::routes();
+//비밀번호 초기화
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get(
+    'auth/remind',
+    'PasswordsController@getRemind'
+)->name('remind.create');
+
+Route::post(
+    'auth/remind',
+    'PasswordsController@postRemind'
+)->name('remind.store');
+
+Route::get(
+    'auth/reset/{token}',
+    'PasswordsController@getReset'
+)->name('reset.create')
+    ->where('code', '[\pL-\pN]{64}');
+
+Route::post(
+    'auth/reset',
+    'PasswordsController@postReset'
+)->name('reset.store');
+
+
+
+
+
 
 
 Route::get('docs/{file?}', 'DocsController@show');
