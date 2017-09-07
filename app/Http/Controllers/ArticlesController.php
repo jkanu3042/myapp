@@ -15,7 +15,7 @@ class ArticlesController extends Controller
     }
 
 
-    public function index()
+    public function index($slug = null)
     {
 
         //즉시 로드(Eager Load)
@@ -23,10 +23,15 @@ class ArticlesController extends Controller
 //        return view('articles.index', compact('articles'));
 
         //지연 로드(lazy load) - 즉시 로드하지 않고 나중에 필요할때에 관계를 로드 할 때 이 방법을 쓴다.
-        $articles = \App\Article::latest()->paginate(3);
 
+        $query = $slug
+            ? \App\Tag::whereSlug($slug)->firstOrFail()->articles()
+            : new \App\Article;
+
+        $articles = $query->latest()->paginate(3);
         //15.4.2 뷰 디버깅
         //dd(view('articles.index', compact('articles'))->render());
+
         return view('articles.index', compact('articles'));
 
     }
@@ -78,6 +83,7 @@ class ArticlesController extends Controller
             return back()->with('flash_message', '글이 저장되지 않았습니다.')
                 ->withInput();
         }
+        $article->tags()->sync($request->input('tags'));
 
         event(new \App\Events\ArticleEvent($article));
 
@@ -119,6 +125,7 @@ class ArticlesController extends Controller
     public function update(\App\Http\Requests\ArticlesRequest $request, \App\Article $article)
     {
         $article->update($request->all());
+        $article->tags()->sync($request->input('tags'));
         flash()->message('수정하신 내용을 저장하였습니다.');
 
         return redirect(route('articles.show', $article->id));

@@ -24,6 +24,11 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('articles', 'ArticlesController');
 
+Route::get(
+    'tags/{slug}/articles',
+    'ArticlesController@index'
+    )->name('tags.articles.index');
+
 //사용자 가입
 Route::get(
     'auth/register',

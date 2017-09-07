@@ -46,7 +46,7 @@
 </head>
 <body id="app-layout">
 @include('layouts.partial.navigation')
-<div class="container">
+<div class="container" id="app">
     @include('flash::message')
     @yield('content')
 </div>
