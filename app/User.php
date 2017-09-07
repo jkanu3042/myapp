@@ -22,7 +22,6 @@ class User extends Authenticatable
         'last_login',
     ];
 
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -36,6 +35,11 @@ class User extends Authenticatable
         'activated' => 'boolean',
     ];
 
+    public function isAdmin()
+    {
+        return ($this->id === 26) ? true : false;
+    }
+
     public function articles(){
         return $this->hasMany(Article::class);
     }
@@ -44,4 +48,6 @@ class User extends Authenticatable
     {
         return $query->whereEmail($email)->whereNull('password');
     }
+
+
 }

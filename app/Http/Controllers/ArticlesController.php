@@ -8,6 +8,13 @@ use App\Http\Requests\ArticlesRequest;
 
 class ArticlesController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth', ['except'=> ['index', 'show']]);
+    }
+
+
     public function index()
     {
 
@@ -16,8 +23,7 @@ class ArticlesController extends Controller
 //        return view('articles.index', compact('articles'));
 
         //지연 로드(lazy load) - 즉시 로드하지 않고 나중에 필요할때에 관계를 로드 할 때 이 방법을 쓴다.
-        $articles = \App\Arpticle::latest()->paginate(3);
-        $articles->load('user');
+        $articles = \App\Article::latest()->paginate(3);
 
         //15.4.2 뷰 디버깅
         //dd(view('articles.index', compact('articles'))->render());
@@ -31,7 +37,8 @@ class ArticlesController extends Controller
      */
     public function create()
     {
-        return view('articles.create');
+        $article = new \App\Article;
+        return view('articles.create', compact('article'));
 
     }
     /**
@@ -60,8 +67,12 @@ class ArticlesController extends Controller
 //
 //
 //        $this->validate($request, $rules, $messages);
-        $article = \App\User::find(1)->articles()
-            ->create($request->all());
+
+        /* 하드코딩 */
+//        $article = \App\User::find(1)->articles()
+//            ->create($request->all());
+
+        $article = $request->user()->articles()->create($request->all());
 
         if(!$article) {
             return back()->with('flash_message', '글이 저장되지 않았습니다.')
@@ -82,10 +93,8 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(\App\Article $article)
     {
-        $article = \App\Article::findOrFail($id);
-        debug($article->toArray());
         return view('articles.show', compact('article'));
     }
     /**
@@ -94,9 +103,11 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(\App\Article $article)
     {
-        return __METHOD__ . '은(는) 다음 기본 키를 가진 Article 모델을 수정하기 위한 폼을 담은 뷰를반환합니다.:' . $id;
+        $this->authorize('update', $article);
+        return view('articles.edit', compact('article'));
+
     }
     /**
      * Update the specified resource in storage.
@@ -105,9 +116,12 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(\App\Http\Requests\ArticlesRequest $request, \App\Article $article)
     {
-        return __METHOD__ . '은(는) 사용자의 입력한 폼 데이터로 다음 기본 키를 가진 Article 모델을 수정합니다.:' . $id;
+        $article->update($request->all());
+        flash()->message('수정하신 내용을 저장하였습니다.');
+
+        return redirect(route('articles.show', $article->id));
     }
     /**
      * Remove the specified resource from storage.
@@ -115,8 +129,11 @@ class ArticlesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(\App\Article $article)
     {
-        return __METHOD__ . '은(는) 다음 기본 키를 가진 Article 모델을 삭제합니다.:' . $id;
+        $this->authorize('delete', $article);
+        $article->delete();
+
+        return response()->json([], 204);
     }
 }
