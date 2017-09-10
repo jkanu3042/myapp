@@ -24,6 +24,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('articles', 'ArticlesController');
 
+Route::resource('attachments', 'AttachmentsController', ['only' => ['store', 'destroy']]);
+
 Route::get(
     'tags/{slug}/articles',
     'ArticlesController@index'

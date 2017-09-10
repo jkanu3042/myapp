@@ -16,6 +16,12 @@ class Article extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+
+    }
+
     protected $with = [
         'user',
     ];

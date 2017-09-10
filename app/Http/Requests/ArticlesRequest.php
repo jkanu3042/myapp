@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Database\Eloquent\Collection;
+use App\Attachment;
+
 
 class ArticlesRequest extends FormRequest
 {
@@ -11,6 +14,9 @@ class ArticlesRequest extends FormRequest
      *
      * @return bool
      */
+
+    protected $dontFlash = ['files'];
+
     public function authorize()
     {
         return true;
@@ -23,10 +29,16 @@ class ArticlesRequest extends FormRequest
      */
     public function rules()
     {
+        $mimes = implode(',', config('project.mimes'));
+
         return [
             'title' => ['required'],
-            'content' => ['required', 'min:10'],
             'tags' => ['required', 'array'],
+            'content' => ['required', 'min:10'],
+            'files' => ['array'],
+            'files.*' => ["mimes:{$mimes}", 'max:30000'],
+            'attachments' => ['array'],
+            'attachments.*' => ['integer', 'exists:attachments,id'],
         ];
     }
 
@@ -44,6 +56,31 @@ class ArticlesRequest extends FormRequest
             'title' => '제목',
             'content' => '본문',
         ];
+    }
+
+    /**
+     * 'notification' 입력 값을 머지한 사용자 입력값을 조회합니다.
+     *
+     * @return array
+     */
+    public function getPayload()
+    {
+        return array_merge($this->all(), [
+            'notification' => $this->has('notification'),
+        ]);
+    }
+
+    /**
+     * 사용자 입력 값으로부터 첨부파일 객체를 조회합니다.
+     *
+     * @return Collection
+     */
+    public function getAttachments()
+    {
+        return Attachment::whereIn(
+            'id',
+            $this->input('attachments', [])
+        )->get();
     }
 
 

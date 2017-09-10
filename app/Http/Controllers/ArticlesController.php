@@ -54,36 +54,22 @@ class ArticlesController extends Controller
      */
     public function store(ArticlesRequest $request)
     {
-//        $rules = [
-//            'title' => ['required'],
-//            'content' => ['required', 'min:10'],
-//        ];
-//
-//        $messages = [
-//            'title.required' => '제목은 필수 입력 사항입니다.',
-//            'content.required' => '본문은 필수 입력 사항입니다.',
-//            'content.min' => '본문은 최소 :min 글자 이상이 필요합니다.',
-//        ];
-//        $validator = \Validator::make($request->all(), $rules, $messages);
-//        if($validator->fails()){
-//            return back()->withErrors($validator)
-//                ->withInput();
-//        }
-//
-//
-//        $this->validate($request, $rules, $messages);
+        $user = $request->user();
 
-        /* 하드코딩 */
-//        $article = \App\User::find(1)->articles()
-//            ->create($request->all());
-
-        $article = $request->user()->articles()->create($request->all());
+        $article = $user->articles()->create(
+            $request->getPayload()
+        );
 
         if(!$article) {
             return back()->with('flash_message', '글이 저장되지 않았습니다.')
                 ->withInput();
         }
         $article->tags()->sync($request->input('tags'));
+
+        $request->getAttachments()->each(function ($attachment) use ($article) {
+            $attachment->article()->associate($article);
+            $attachment->save();
+        });
 
         event(new \App\Events\ArticleEvent($article));
 

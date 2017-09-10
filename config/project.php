@@ -30,4 +30,11 @@ return [
         'tip' => '팁',
     ],
 
+    'mimes' => [
+        'png',
+        'jpg',
+        'zip',
+        'tar',
+    ],
+
 ];
