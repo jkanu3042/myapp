@@ -49,5 +49,10 @@ class User extends Authenticatable
         return $query->whereEmail($email)->whereNull('password');
     }
 
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
 
 }

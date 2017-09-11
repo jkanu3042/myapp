@@ -26,10 +26,16 @@ Route::resource('articles', 'ArticlesController');
 
 Route::resource('attachments', 'AttachmentsController', ['only' => ['store', 'destroy']]);
 
+/* 코멘트(댓글) */
+Route::resource('comments', 'CommentsController', ['only' => ['update', 'destroy']]);
+Route::resource('articles.comments', 'CommentsController', ['only' => 'store']);
+
 Route::get(
     'tags/{slug}/articles',
     'ArticlesController@index'
     )->name('tags.articles.index');
+
+
 
 //사용자 가입
 Route::get(
